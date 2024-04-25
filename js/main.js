@@ -3,12 +3,7 @@
 sistemaCompras()
 
 function sistemaCompras() {
-    //Base de datos categorias
-    const categoriadb = [
-        { id: 1, nombre: "Marca" },
-        { id: 2, nombre: "Género" },
-        { id: 3, nombre: "Color" },
-    ]
+
     // Base de datos calzado
     const productodb = [
         { id: 0, nombre: "Adidas T4 Fire", marca: "Adidas", talle: 38, color: "Negro", tipo: "calzado deportivo", genero: "Hombre", precio: 125000, stock: 7 },
@@ -351,36 +346,47 @@ function sistemaCompras() {
         { id: 1, nombre: "Hombre" },
         { id: 2, nombre: "Mujer" }
     ]
+    //Base de datos categorias
+    const categoriadb = [
+        { id: 1, nombre: "Marca", base: marcadb },
+        { id: 2, nombre: "Género", base: generodb },
+        { id: 3, nombre: "Color", base: colordb }
+    ]
     ///////////////////////
     welcome()
     let name = login()
-    let opcionElegida = menuPrincipal(name)
-    let catPropiedad = categoriadb[opcionElegida - 1].nombre.toLowerCase()
-    console.log(catPropiedad)
-    let opcionSubmenu = menuSecundario(catPropiedad)
+    menuPrincipal(name)
 
-    function menuSecundario(opcionElegida) {
-        console.log(opcionElegida)
-        base={}
-        if(opcionElegida=="marca"){
-            base=marcadb
-        }else if(opcionElegida=="género"){
-            base=generodb
-        }else if(opcionElegida=="color"){
-            base=colordb
-        }
-        console.log(base)
-        let opcion = Number(prompt("Elija una opción de búsqueda para su calzado\n" + opciones(base) + "9: Volver\n0: Salir\n"))
+    function menuProductos(base) {
+        console.log(base.nombre)        
+        let productos = []
+        let resultado=[]
+        
+        productos = productodb.filter(item => item.marca === base.nombre)
 
-        if (opcion === 0) {
-            exit(name)
-        } else if (opcion === 9) {
-            opcionElegida = menuPrincipal(name)
-        } else if (opcion >= 1 || opcion <= base.length) {
+        productos.forEach(producto => {
+            resultado.push (`${producto.marca} - ${producto.nombre} - $${producto.precio}`)
+        })
 
-        } else if (opcion > base.length || opcion < 0) {
-            alert("Debe seleccionar una de las opciones disponibles")
-        }
+        alert(resultado.join("\n"))
+    }
+
+
+    function menuSecundario(opcionMenu) {
+        let base = (categoriadb[opcionMenu - 1].base)
+        let opcionMenuSecundario
+        do {
+            opcionMenuSecundario = Number(prompt(`Elija una opción de búsqueda para su calzado\n${opciones(base)}----------\n9: Volver\n0: Salir\n`))
+            if (opcionMenuSecundario === 0) {
+                exit(name)
+            } else if (opcionMenuSecundario === 9) {
+                menuPrincipal(name)
+            } else if (!base.some(item => item.id === opcionMenuSecundario)) {
+                alert("Por favor, ingrese una opción válida")
+            } else {
+                menuProductos(base[opcionMenuSecundario - 1])
+            }
+        } while (opcionMenuSecundario !== 0 && opcionMenuSecundario !== 9 && (!base.some(item => item.id === opcionMenuSecundario)))
 
     }
 
@@ -407,6 +413,11 @@ function sistemaCompras() {
         alert(`${name} gracias por elegirnos\nVuelva pronto!`)
         welcome()
     }
+
+
+
+
+
 
     ///////////////////////////////
     function welcome() {
@@ -439,19 +450,22 @@ function sistemaCompras() {
     }
     ///////////////////////////////
     function menuPrincipal(name) {
-        let opcion = ""
+        let opcionMenu = ""
         do {
-            opcion = Number(prompt(`Bienvenido ${name}\nElija una opción de búsqueda para su calzado\n${opciones(categoriadb)}0: Salir\n`))
-            if (opcion === 0) {
+            opcionMenu = Number(prompt(`Bienvenido ${name}\nElija una opción de búsqueda para su calzado\n${opciones(categoriadb)}----------\n0: Salir\n`))
+            if (opcionMenu === 0) {
                 exit(name)
-            } else if (opcion < 1 || opcion > 3) {
+            } else if (!categoriadb.some(item => item.id === opcionMenu)) {
                 alert("Por favor, ingrese una opción válida")
+            } else {
+                menuSecundario(opcionMenu)
             }
-        } while (opcion !== 0 && (opcion < 1 || opcion > 3))
-        return opcion
+        } while (opcionMenu !== 0 && (!categoriadb.some(item => item.id === opcionMenu)))
+
     }
     ///////////////////////////////
     function opciones(objeto) {
+        console.log(objeto)
         let opciones = ""
         objeto.forEach(item => {
             opciones += `${item.id}: ${item.nombre}\n`
@@ -459,14 +473,10 @@ function sistemaCompras() {
         console.log(opciones)
         return opciones
     }
+
+
     ///////////////////////////////
-    function submenu(objeto, propiedad) {
-        let lista = ""
-        objeto.forEach(item => {
-            lista += `${item.id}: ${item[propiedad]}\n`
-        })
-        return lista
-    }
+
     ///////////////////////////////
 
 
