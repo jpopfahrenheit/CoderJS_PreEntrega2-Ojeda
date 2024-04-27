@@ -357,19 +357,56 @@ function sistemaCompras() {
     let name = login()
     menuPrincipal(name)
 
-    function menuProductos(base) {
-        console.log(base.nombre)        
-        let productos = []
-        let resultado=[]
-        
-        productos = productodb.filter(item => item.marca === base.nombre)
+    function menuProductos(opcion, base) {
+        console.log(opcion) // {id: 1, nombre: 'Adidas'}
+        console.log(base)   // 1
 
-        productos.forEach(producto => {
-            resultado.push (`${producto.marca} - ${producto.nombre} - $${producto.precio}`)
+        if (base === 1) {
+            console.log("marca")
+
+            let productosFiltrados = []
+            productodb.forEach(producto => {
+                if (producto.marca.includes(opcion.nombre) && !productosFiltrados.some(item => item.nombre === producto.nombre)) {
+                    productosFiltrados.push({ nombre: producto.nombre })
+                }
+            })
+            console.log(productosFiltrados)
+
+            let opcionNombre = Number(prompt(`Elija el modelo de calzado que desea\n${obtenerNombresUnicos(productosFiltrados)}`))
+            console.log(opcionNombre)
+            let nombre = 
+
+
+
+        } else if (opcionMenu === 2) {
+            console.log("genero")
+        } else if (opcionMenu === 3) {
+            console.log("color")
+        }
+    }
+
+    /////////////////////////////
+
+    function obtenerNombresUnicos(objeto2) {
+
+        let nombresProductos = []
+    
+        objeto2.forEach((item, index) => {
+            if (!nombresProductos.includes(item.nombre)) {
+                nombresProductos.push(`${index + 1}: ${item.nombre}`)
+            }
         })
 
-        alert(resultado.join("\n"))
+        let mensaje = nombresProductos.join("\n")
+    
+        return mensaje
     }
+    
+    
+
+
+
+
 
 
     function menuSecundario(opcionMenu) {
@@ -384,7 +421,7 @@ function sistemaCompras() {
             } else if (!base.some(item => item.id === opcionMenuSecundario)) {
                 alert("Por favor, ingrese una opción válida")
             } else {
-                menuProductos(base[opcionMenuSecundario - 1])
+                menuProductos(base[opcionMenuSecundario - 1], opcionMenu)
             }
         } while (opcionMenuSecundario !== 0 && opcionMenuSecundario !== 9 && (!base.some(item => item.id === opcionMenuSecundario)))
 
@@ -475,9 +512,9 @@ function sistemaCompras() {
     }
 
 
-    ///////////////////////////////
-
-    ///////////////////////////////
+    //  if (producto.marca.includes(opcion.nombre) && !productosFiltrados.includes(producto.nombre)) {
+    //        productosFiltrados.push(producto.nombre)
+    //  
 
 
 
