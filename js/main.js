@@ -285,12 +285,12 @@ function sistemaCompras() {
                 detalleCalzado(nombre2)
             }
 
-            
 
-            
+
+
         } while (opcionNombre !== 0 && opcionNombre !== 9 && (!productosFiltrados.some(item => item.id === opcionMenu)))
 
-        function detalleCalzado(nombre2){
+        function detalleCalzado(nombre2) {
             let calzado = Number(prompt(`Seleccione el calzado que desea agregar al carrito \n${listaCalzado(nombre2)}\n----------\n9: Volver\n0: Salir\n`))
             console.log(calzado)
             // condicional
@@ -300,24 +300,15 @@ function sistemaCompras() {
                 menuSecundario(opcionMenu)
             } else if (calzado < 1 || calzado > nombre2.length) {
                 alert("Por favor, ingrese una opción válida")
-            }else{
-
+            } else {
+                let calzado2 = nombre2[calzado - 1]
+                console.log(calzado2)
+                carrito.push(calzado2)
+                console.log(calzado2.precio)
+                total.push(calzado2.precio)
+                alert("Carrito de compras:\n" + verCarrito(carrito))
             }
-
-
-
-            let calzado2 = nombre2[calzado - 1]
-            console.log(calzado2)
-            carrito.push(calzado2)
-            console.log(calzado2.precio)
-            total.push(calzado2.precio)
-            alert("Carrito de compras:\n" + verCarrito(carrito))    
         }
-
-
-
-
-
     }
 
 
