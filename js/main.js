@@ -158,13 +158,15 @@ function sistemaCompras() {
         } while (opcionMenuSecundario !== 0 && opcionMenuSecundario !== 9 && (!base.some(item => item.id === opcionMenuSecundario)))
 
     }
-    function menuProductos(opcion, base) {
+    function menuProductos(opcion, base) {1
         if (base === 1) {
             productosFiltrados(opcion)
         } else if (base === 2) {
             console.log("genero")
+            alert("no terminado")
         } else if (base === 3) {
             console.log("nombre")
+            alert("no terminado")
         }
     }
     function productosFiltrados(opcion) {
