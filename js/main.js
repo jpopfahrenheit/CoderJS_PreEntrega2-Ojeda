@@ -3,7 +3,6 @@
 sistemaCompras()
 
 function sistemaCompras() {
-
     // Base de datos calzado
     const productodb = [
         { id: 0, nombre: "Adidas T4 Fire", marca: "Adidas", genero: "Hombre", precio: 125000, stock: 7 }
@@ -131,7 +130,6 @@ function sistemaCompras() {
         errorLogin()
     }
     function menuPrincipal(name) {
-
         do {
             opcionMenu = Number(prompt(`Bienvenido ${name}\nElija una opción de búsqueda para su calzado\n${opciones(categoriadb)}----------\n0: Salir\n`))
             if (opcionMenu === 0) {
@@ -142,7 +140,6 @@ function sistemaCompras() {
                 menuSecundario(opcionMenu)
             }
         } while (opcionMenu !== 0 && (!categoriadb.some(item => item.id === opcionMenu)))
-
     }
     function menuSecundario(opcionMenu) {
         let base = (categoriadb[opcionMenu - 1].base)
@@ -170,6 +167,31 @@ function sistemaCompras() {
             console.log("nombre")
         }
     }
+    function productosFiltrados(opcion) {
+        let productosFiltrados = []
+        productodb.forEach(producto => {
+            if (producto.marca.includes(opcion.nombre) && !productosFiltrados.some(item => item.nombre === producto.nombre)) {
+                productosFiltrados.push({ nombre: producto.nombre })
+            }
+        })
+        let opcionNombre = ""
+        do {
+            opcionNombre = Number(prompt(`Elija el modelo de calzado que desea\n${obtenerNombresUnicos(productosFiltrados)}\n----------\n9: Volver\n0: Salir\n`))
+            if (opcionNombre === 0) {
+                exit(name)
+            } else if (opcionNombre === 9) {
+                menuSecundario(opcionMenu)
+            } else if (opcionNombre < 1 || opcionNombre > productosFiltrados.length) {
+                alert("Por favor, ingrese una opción válida")
+            } else {
+                let nombre = productosFiltrados[opcionNombre - 1].nombre
+                let nombre2 = productodb.filter(producto => producto.nombre === nombre)
+                detalleCalzado(nombre2)
+            }
+        } while (opcionNombre !== 0 && opcionNombre !== 9 && (!productosFiltrados.some(item => item.id === opcionMenu)))
+
+
+    }
     function listaCalzado(array) {
         const lista = array.map((objeto, index) => ({
             index: index,
@@ -181,66 +203,24 @@ function sistemaCompras() {
         return lista.map(producto => `${producto.index + 1}: ${producto.nombre} ${producto.genero} $${producto.precio} | Stock: ${producto.stock}`).join("\n")
     }
     function opciones(objeto) {
-        console.log(objeto)
         let opciones = ""
         objeto.forEach(item => {
             opciones += `${item.id}: ${item.nombre}\n`
         })
-        console.log(opciones)
         return opciones
     }
     function obtenerNombresUnicos(objeto) {
-
         let nombresProductos = []
-
         objeto.forEach((item, index) => {
             if (!nombresProductos.includes(item.nombre)) {
                 nombresProductos.push(`${index + 1}: ${item.nombre}`)
             }
         })
-
         let mensaje = nombresProductos.join("\n")
-
         return mensaje
-    }
-    function productosFiltrados(opcion) {
-        let productosFiltrados = []
-        productodb.forEach(producto => {
-            if (producto.marca.includes(opcion.nombre) && !productosFiltrados.some(item => item.nombre === producto.nombre)) {
-                productosFiltrados.push({ nombre: producto.nombre })
-            }
-        })
-        console.log(productosFiltrados)
-
-        let opcionNombre = ""
-
-        let nombre2 = []
-        do {
-            opcionNombre = Number(prompt(`Elija el modelo de calzado que desea\n${obtenerNombresUnicos(productosFiltrados)}\n----------\n9: Volver\n0: Salir\n`))
-            console.log(opcionNombre)
-            console.log(productosFiltrados)
-
-            if (opcionNombre === 0) {
-                exit(name)
-            } else if (opcionNombre === 9) {
-                menuSecundario(opcionMenu)
-            } else if (opcionNombre < 1 || opcionNombre > productosFiltrados.length) {
-                alert("Por favor, ingrese una opción válida")
-            } else {
-                let nombre = productosFiltrados[opcionNombre - 1].nombre
-                console.log(nombre)
-                nombre2 = productodb.filter(producto => producto.nombre === nombre)
-                console.log(nombre2)
-                detalleCalzado(nombre2)
-            }
-        } while (opcionNombre !== 0 && opcionNombre !== 9 && (!productosFiltrados.some(item => item.id === opcionMenu)))
-
-
     }
     function detalleCalzado(nombre2) {
         let calzado = Number(prompt(`Seleccione el calzado que desea agregar al carrito \n${listaCalzado(nombre2)}\n----------\n9: Volver\n0: Salir\n`))
-        console.log(calzado)
-        // condicional
         if (calzado === 0) {
             exit(name)
         } else if (calzado === 9) {
@@ -249,9 +229,7 @@ function sistemaCompras() {
             alert("Por favor, ingrese una opción válida")
         } else {
             let calzado2 = nombre2[calzado - 1]
-            console.log(calzado2)
             carrito.push(calzado2)
-            console.log(calzado2.precio)
             total.push(calzado2.precio)
             alert("Carrito de compras:\n" + verCarrito(carrito))
         }
