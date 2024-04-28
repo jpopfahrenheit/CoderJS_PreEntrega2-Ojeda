@@ -102,91 +102,10 @@ function sistemaCompras() {
     welcome()
     let name = login()
     menuPrincipal(name)
-
-    function menuProductos(opcion, base) {
-        if (base === 1) {
-            productosFiltrados(opcion)
-        } else if (base === 2) {
-            console.log("genero")
-        } else if (base === 3) {
-            console.log("nombre")
-        }
-    }
-    function verCarrito(array) {
-        const lista = array.map((objeto, index) => ({
-            index: index,
-            nombre: objeto.nombre,
-            genero: objeto.genero,
-            precio: objeto.precio,
-            stock: objeto.stock
-        }))
-        return lista.map(producto => `${producto.index + 1}: ${producto.nombre} ${producto.genero} $${producto.precio}`).join("\n")
-    }
-
-    function listaCalzado(array) {
-        const lista = array.map((objeto, index) => ({
-            index: index,
-            nombre: objeto.nombre,
-            genero: objeto.genero,
-            precio: objeto.precio,
-            stock: objeto.stock
-        }))
-        return lista.map(producto => `${producto.index + 1}: ${producto.nombre} ${producto.genero} $${producto.precio} | Stock: ${producto.stock}`).join("\n")
-    }
-
-
-    function menuSecundario(opcionMenu) {
-        let base = (categoriadb[opcionMenu - 1].base)
-        let opcionMenuSecundario
-        do {
-            opcionMenuSecundario = Number(prompt(`Elija una opción de búsqueda para su calzado\n${opciones(base)}----------\n9: Volver\n0: Salir\n`))
-            if (opcionMenuSecundario === 0) {
-                exit(name)
-            } else if (opcionMenuSecundario === 9) {
-                menuPrincipal(name)
-            } else if (!base.some(item => item.id === opcionMenuSecundario)) {
-                alert("Por favor, ingrese una opción válida")
-            } else {
-                menuProductos(base[opcionMenuSecundario - 1], opcionMenu)
-            }
-        } while (opcionMenuSecundario !== 0 && opcionMenuSecundario !== 9 && (!base.some(item => item.id === opcionMenuSecundario)))
-
-    }
-
-
-    function cart(total) {
-        let messageCart = ""
-        if (total == 0) {
-            messageCart = "El carrito está vacío"
-        } else {
-            messageCart = `El total acumulado en el carrito es: $${total}`
-        }
-        alert(messageCart)
-    }
-
-    function errorLogin() {
-        for (let i = 3; i > 0; i--) {
-            alert(`Vuelva más tarde (${i})`)
-        }
-        alert("Bueno, ya esperaste demasiado, prueba otra vez")
-        welcome()
-    }
-
-    function exit(name) {
-        alert(`${name} gracias por elegirnos\nVuelva pronto!`)
-        welcome()
-    }
-
-
-
-
-
-
-    ///////////////////////////////
+    ///////////////////////
     function welcome() {
         alert(`Bienvenidos a Zapatillas Center\nLe solicitamos que inicie sesión\n\nUtilice las siguientes credenciales\nUsuario: JuanPablo\nContraseña: CoderHouse`)
     }
-    ///////////////////////////////
     function login() {
         const userdb = [
             { user: "JuanPablo", pass: "CoderHouse", name: "Juan Pablo" },
@@ -211,7 +130,6 @@ function sistemaCompras() {
         alert("Número máximo de intentos alcanzado. Intente más tarde.")
         errorLogin()
     }
-    ///////////////////////////////
     function menuPrincipal(name) {
 
         do {
@@ -226,7 +144,42 @@ function sistemaCompras() {
         } while (opcionMenu !== 0 && (!categoriadb.some(item => item.id === opcionMenu)))
 
     }
-    ///////////////////////////////
+    function menuSecundario(opcionMenu) {
+        let base = (categoriadb[opcionMenu - 1].base)
+        let opcionMenuSecundario
+        do {
+            opcionMenuSecundario = Number(prompt(`Elija una opción de búsqueda para su calzado\n${opciones(base)}----------\n9: Volver\n0: Salir\n`))
+            if (opcionMenuSecundario === 0) {
+                exit(name)
+            } else if (opcionMenuSecundario === 9) {
+                menuPrincipal(name)
+            } else if (!base.some(item => item.id === opcionMenuSecundario)) {
+                alert("Por favor, ingrese una opción válida")
+            } else {
+                menuProductos(base[opcionMenuSecundario - 1], opcionMenu)
+            }
+        } while (opcionMenuSecundario !== 0 && opcionMenuSecundario !== 9 && (!base.some(item => item.id === opcionMenuSecundario)))
+
+    }
+    function menuProductos(opcion, base) {
+        if (base === 1) {
+            productosFiltrados(opcion)
+        } else if (base === 2) {
+            console.log("genero")
+        } else if (base === 3) {
+            console.log("nombre")
+        }
+    }
+    function listaCalzado(array) {
+        const lista = array.map((objeto, index) => ({
+            index: index,
+            nombre: objeto.nombre,
+            genero: objeto.genero,
+            precio: objeto.precio,
+            stock: objeto.stock
+        }))
+        return lista.map(producto => `${producto.index + 1}: ${producto.nombre} ${producto.genero} $${producto.precio} | Stock: ${producto.stock}`).join("\n")
+    }
     function opciones(objeto) {
         console.log(objeto)
         let opciones = ""
@@ -236,9 +189,6 @@ function sistemaCompras() {
         console.log(opciones)
         return opciones
     }
-
-    /////////////////////////////
-
     function obtenerNombresUnicos(objeto) {
 
         let nombresProductos = []
@@ -253,7 +203,6 @@ function sistemaCompras() {
 
         return mensaje
     }
-
     function productosFiltrados(opcion) {
         let productosFiltrados = []
         productodb.forEach(producto => {
@@ -284,41 +233,47 @@ function sistemaCompras() {
                 console.log(nombre2)
                 detalleCalzado(nombre2)
             }
-
-
-
-
         } while (opcionNombre !== 0 && opcionNombre !== 9 && (!productosFiltrados.some(item => item.id === opcionMenu)))
 
-        function detalleCalzado(nombre2) {
-            let calzado = Number(prompt(`Seleccione el calzado que desea agregar al carrito \n${listaCalzado(nombre2)}\n----------\n9: Volver\n0: Salir\n`))
-            console.log(calzado)
-            // condicional
-            if (calzado === 0) {
-                exit(name)
-            } else if (calzado === 9) {
-                menuSecundario(opcionMenu)
-            } else if (calzado < 1 || calzado > nombre2.length) {
-                alert("Por favor, ingrese una opción válida")
-            } else {
-                let calzado2 = nombre2[calzado - 1]
-                console.log(calzado2)
-                carrito.push(calzado2)
-                console.log(calzado2.precio)
-                total.push(calzado2.precio)
-                alert("Carrito de compras:\n" + verCarrito(carrito))
-            }
+
+    }
+    function detalleCalzado(nombre2) {
+        let calzado = Number(prompt(`Seleccione el calzado que desea agregar al carrito \n${listaCalzado(nombre2)}\n----------\n9: Volver\n0: Salir\n`))
+        console.log(calzado)
+        // condicional
+        if (calzado === 0) {
+            exit(name)
+        } else if (calzado === 9) {
+            menuSecundario(opcionMenu)
+        } else if (calzado < 1 || calzado > nombre2.length) {
+            alert("Por favor, ingrese una opción válida")
+        } else {
+            let calzado2 = nombre2[calzado - 1]
+            console.log(calzado2)
+            carrito.push(calzado2)
+            console.log(calzado2.precio)
+            total.push(calzado2.precio)
+            alert("Carrito de compras:\n" + verCarrito(carrito))
         }
     }
-
-
-
-
-
-
-
-
-
-
-
+    function verCarrito(array) {
+        const lista = array.map((objeto, index) => ({
+            index: index,
+            nombre: objeto.nombre,
+            genero: objeto.genero,
+            precio: objeto.precio,
+            stock: objeto.stock
+        }))
+        return lista.map(producto => `${producto.index + 1}: ${producto.nombre} ${producto.genero} $${producto.precio}`).join("\n")
+    }
+    function errorLogin() {
+        for (let i = 3; i > 0; i--) {
+            alert(`Vuelva más tarde (${i})`)
+        }
+        alert("Bueno, ya esperaste demasiado, prueba otra vez")
+        welcome()
+    }
+    function exit(name) {
+        alert(`${name} gracias por elegirnos\nVuelva pronto!`)
+    }
 }
